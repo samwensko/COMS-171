@@ -22,7 +22,11 @@ int main() {
 	laborCost = getLaborCost(sqft);
 	paintCost = getPaintCost(paintPrice, sqft);
 	totalCost = laborCost + paintCost;
-	cout << "Gallons of paint required: " << 
+	cout << "Gallons of paint required: " << (sqft / 110) << endl;
+	cout << "Labor hours required:      " << laborHours << endl;
+	cout << "The cost of paint:         " << paintCost << endl;
+	cout << "The labor charges:         " << laborCost << endl;
+	cout << "The total cost:            " << totalCost << endl;
 
 	return 0;
 }
@@ -51,4 +55,3 @@ double getPaintCost(double paintPrice, double sqft){
 	result = gallons * paintPrice;
 	return result;
 }
-
