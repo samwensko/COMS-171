@@ -1,32 +1,44 @@
 #include <iostream>
-//#include <iomanip>
+#include <iomanip>
 //#include <cmath>
 //#include <string>
 using namespace std;
 
 double getSqft(double);
+double getPaintGallons(double);
+double getLaborHours(double);
 double getLaborCost(double);
 double getPaintCost(double, double);
 
 int main() {
 	int rooms;
-	double paintPrice, sqft, laborCost, paintCost, totalCost, laborHours;
-
-	cout << "This program will calculate the cost of painting the interior of your home.\n" <<
-		"How many rooms are in your home? ";
-	cin >> rooms;
-	cout << "What is the cost of paint? ";
-	cin >> paintPrice;
+	double paintPrice, sqft, paintGallons, laborHours, laborCost, paintCost;
+	cout << "This program will calculate the cost of painting an interior of a house.\n";
 	
+	while (rooms < 1) {
+		cout << "How many rooms are in the house? ";
+		cin >> rooms;
+		if (rooms < 1) cout << "There is at least 1 room in your house.\n";
+	}
+	
+	while (paintPrice < 10){
+		cout << "How much does a gallon of paint cost? ";
+		cin >> paintPrice;
+		if (paintPrice < 10) cout << "Paint costs more than $10.\n";
+	}
+
 	sqft = getSqft(rooms);
-	laborCost = getLaborCost(sqft);
-	paintCost = getPaintCost(paintPrice, sqft);
-	totalCost = laborCost + paintCost;
-	cout << "Gallons of paint required: " << (sqft / 110) << endl;
-	cout << "Labor hours required:      " << laborHours << endl;
-	cout << "The cost of paint:         " << paintCost << endl;
-	cout << "The labor charges:         " << laborCost << endl;
-	cout << "The total cost:            " << totalCost << endl;
+	paintGallons = getPaintGallons(sqft);
+	laborHours = getLaborHours(sqft);
+	laborCost = getLaborCost(laborHours);
+	paintCost = getPaintCost(paintPrice, paintGallons);
+	
+	cout << "Gallons of paint: " << paintGallons << endl;
+	cout << "Hours of labor:   " << laborHours << endl;
+	cout << fixed << setprecision(2);
+	cout << "Cost of paint:   $" << paintCost << "/gal\n";
+	cout << "Labor cost:      $" << laborCost << endl;
+	cout << "Total cost:      $" << laborCost + paintCost << endl;
 
 	return 0;
 }
@@ -34,24 +46,38 @@ int main() {
 double getSqft(double rooms){
 	double result, sqft;
 	for (int i = 0; i < rooms; i++){
-		cout << "How many square feet of wall space in room #" <<
-			i + 1 << "? ";
-		cin >> sqft;
-		result += sqft;
+		sqft = -1;
+		while (sqft < 0){
+			cout << "How many square feet of wall space in room #" <<
+				i + 1 << "? ";
+			cin >> sqft;
+			if (sqft < 0) cout << "Enter a positive value for sqaure feet.\n";
+			result += sqft;
+		}
 	}
 	return result;
 }
 
-double getLaborCost(double sqft){
-	double hours, result;
-	hours = (sqft / 110) * 8;
-	result = hours * 25;
+double getPaintGallons(double sqft){
+	double result;
+	result = sqft / 110;
 	return result;
 }
 
-double getPaintCost(double paintPrice, double sqft){
-	double gallons, result;
-	gallons = (sqft / 110);
-	result = gallons * paintPrice;
+double getLaborHours(double sqft){
+	double result;
+	result = (sqft / 110) * 8;
+	return result;
+}
+
+double getLaborCost(double laborHours){
+	double result;
+	result = laborHours * 25;
+	return result;
+}
+
+double getPaintCost(double paintPrice, double paintGallons){
+	double result;
+	result = paintPrice * paintGallons;
 	return result;
 }
